@@ -1,1 +1,0 @@
-/Users/jonesax/Projects/qtile/CMakeFiles/qtile.dir

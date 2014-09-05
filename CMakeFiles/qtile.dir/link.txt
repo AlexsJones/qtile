@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/qtile.dir/src/gameworld.cpp.o CMakeFiles/qtile.dir/src/qtile.cpp.o  -o qtile  -lsfml-network -lsfml-system -lsfml-window -lsfml-window -lsfml-graphics 

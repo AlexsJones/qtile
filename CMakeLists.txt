@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+project(qtile)
+set(CMAKE_INSTALL_PREFIX /usr)
+file(GLOB src_dir "src/*.cpp")
+add_executable(qtile ${src_dir})
+target_link_libraries(qtile -lsfml-network -lsfml-system -lsfml-window -lsfml-window -lsfml-graphics)

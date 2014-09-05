@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jonesax/Projects/qtile/src/gameworld.h
+SFML/Graphics.hpp
+-
+
+/Users/jonesax/Projects/qtile/src/qtile.cpp
+stdlib.h
+-
+SFML/Graphics.hpp
+-
+gameworld.h
+/Users/jonesax/Projects/qtile/src/gameworld.h
+

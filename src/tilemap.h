@@ -19,12 +19,19 @@
 #define __TILEMAP_H__
 #include <SFML/Graphics.hpp>
 #include "gameworld.h"
+
+typedef enum STATE { 
+UNSELECTED,
+START,
+END
+}STATE;
+
 class tile {
   public:
     tile(unsigned int diameter,float x, float y, float weight);
     float x, y, weight;
     unsigned int diameter;
-    bool selected;
+    STATE current_state;
 };
 
 class tilemap {
@@ -32,8 +39,10 @@ class tilemap {
     tilemap(sf::Vector2u dimension, unsigned int tile_diameter,gameworld *game_world);
     void draw(void);
     void generate_map(void);
-    void nominate_random_select(void);
+    void nominate_random_start(void);
+    void nominate_random_end(void);
   private:
+    void nominate_random(STATE s);
     unsigned int _width;
     unsigned int _height;
     float tile_diameter;

@@ -19,19 +19,16 @@
 #include "tilemap.h"
 #include <iostream>
 
-tile::tile(unsigned int d,float pos_x, float pos_y, float w):diameter(d),x(pos_x),y(pos_y),weight(w),selected(false){
-  std::cout << "Initializing tile at " << x << " " << y << std::endl;
+tile::tile(unsigned int d,float pos_x, float pos_y, float w):diameter(d),x(pos_x),y(pos_y),weight(w),current_state(UNSELECTED){
 }
 tilemap::tilemap(sf::Vector2u dimension, unsigned int tile_d,gameworld *gw):_game_world(gw),_width(dimension.x),_height(dimension.y),tile_diameter(tile_d){
 
   _num_tiles_x = dimension.x / tile_diameter;
   _num_tiles_y = dimension.y / tile_diameter;
   _game_world = gw;
-
-  std::cout << "Create new tile map for " <<_game_world->title << " with dimensions [" << _num_tiles_x << "|" << _num_tiles_y << "]"  << std::endl;
 }
 void tilemap::draw() {
-  
+
   sf::RectangleShape rect(sf::Vector2f(tile_diameter,tile_diameter));
   rect.setOutlineThickness(1);
   rect.setOutlineColor(sf::Color(0,0,0));
@@ -39,24 +36,37 @@ void tilemap::draw() {
   for(int x=0; x<_num_tiles_x; ++x) {
     for(int y=0;y<_num_tiles_y; ++y) {
       tile *current = &(_tile_matrix[x][y]);
-      if(current->selected) {
-        rect.setFillColor(sf::Color(0,0,0));
-      }else {
-        rect.setFillColor(sf::Color(255,255,255));
+
+      switch(current->current_state) {
+        case UNSELECTED: 
+          rect.setFillColor(sf::Color(255,255,255));
+          break;
+        case START:
+          rect.setFillColor(sf::Color(0,255,0));
+          break;
+        case END:
+          rect.setFillColor(sf::Color(255,0,0));
+          break;
+        default:
+          rect.setFillColor(sf::Color(255,255,255));
       }
       rect.setPosition(sf::Vector2f(current->x,current->y));
       window->draw(rect);
     }
   }
 }
-void tilemap::nominate_random_select() {
-  
-  srand(time(NULL));
+
+void tilemap::nominate_random(STATE s) {
   int x = rand() % _num_tiles_x;
   int y = rand() % _num_tiles_y;
-  std::cout << "Nominating " << x << "|" << y <<std::endl;
   tile *current = &(_tile_matrix[x][y]);
-  current->selected = true;
+  current->current_state = s;
+}
+void tilemap::nominate_random_end(void) {
+  nominate_random(END);
+}
+void tilemap::nominate_random_start(void) {
+  nominate_random(START); 
 }
 void tilemap::generate_map() {
 

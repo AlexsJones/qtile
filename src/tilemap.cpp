@@ -47,6 +47,9 @@ void tilemap::draw() {
         case END:
           rect.setFillColor(sf::Color(255,0,0));
           break;
+        case OBSTRUCTION:
+          rect.setFillColor(sf::Color(0,0,0));
+          break;
         default:
           rect.setFillColor(sf::Color(255,255,255));
       }
@@ -56,17 +59,26 @@ void tilemap::draw() {
   }
 }
 
-void tilemap::nominate_random(STATE s) {
+void tilemap::generate_noise(void) {
+  
+  int num = rand() % (_num_tiles_x * _num_tiles_y) / 10;
+  std::cout << "Generating "<< num << " random tiles" << std::endl;
+  for(int i=0;i<num;++i) {
+    nominate_random(OBSTRUCTION);
+  }
+}
+sf::Vector2i tilemap::nominate_random(STATE s) {
   int x = rand() % _num_tiles_x;
   int y = rand() % _num_tiles_y;
   tile *current = &(_tile_matrix[x][y]);
   current->current_state = s;
+  return sf::Vector2i(x,y);
 }
-void tilemap::nominate_random_end(void) {
-  nominate_random(END);
+sf::Vector2i tilemap::nominate_random_end(void) {
+  return nominate_random(END);
 }
-void tilemap::nominate_random_start(void) {
-  nominate_random(START); 
+sf::Vector2i tilemap::nominate_random_start(void) {
+  return nominate_random(START); 
 }
 void tilemap::generate_map() {
 

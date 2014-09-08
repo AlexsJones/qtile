@@ -23,7 +23,8 @@
 typedef enum STATE { 
 UNSELECTED,
 START,
-END
+END,
+OBSTRUCTION,
 }STATE;
 
 class tile {
@@ -39,10 +40,11 @@ class tilemap {
     tilemap(sf::Vector2u dimension, unsigned int tile_diameter,gameworld *game_world);
     void draw(void);
     void generate_map(void);
-    void nominate_random_start(void);
-    void nominate_random_end(void);
+    sf::Vector2i nominate_random_start(void);
+    sf::Vector2i nominate_random_end(void);
+    void generate_noise(void);
   private:
-    void nominate_random(STATE s);
+    sf::Vector2i nominate_random(STATE s);
     unsigned int _width;
     unsigned int _height;
     float tile_diameter;

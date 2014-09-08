@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
   tile_map->generate_map();
   tile_map->nominate_random_start();
   tile_map->nominate_random_end();
-
+  tile_map->generate_noise();
 
   while(game_world->get_window()->isOpen()) {
     while(game_world->poll_event()) {

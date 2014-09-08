@@ -18,21 +18,30 @@
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #include "gameworld.h"
+#include "tilemap.h"
+
+#define TILE_DIAMETER 25
 
 int main(int argc, char **argv) {
 
-  gameworld *game_world = new gameworld("game");
+  gameworld *game_world = new gameworld((char*)"game",400,400);
+  
+  tilemap *tile_map = new tilemap(game_world->get_window_size(),TILE_DIAMETER,game_world);
 
+  tile_map->generate_map();
+  tile_map->nominate_random_select();
+  
   while(game_world->get_window()->isOpen()) {
     while(game_world->poll_event()) {
       if(game_world->get_event()->type == sf::Event::Closed) {
         game_world->get_window()->close();
       }
     }
-     
-  game_world->get_window()->clear(sf::Color::Black);
-  
-  game_world->get_window()->display();
+
+    game_world->get_window()->clear(sf::Color::Black);
+    tile_map->draw();
+
+    game_world->get_window()->display();
   }
   return 0;
 }

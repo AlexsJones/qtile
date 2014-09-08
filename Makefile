@@ -163,6 +163,30 @@ src/qtile.cpp.s:
 	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/qtile.cpp.s
 .PHONY : src/qtile.cpp.s
 
+src/tilemap.o: src/tilemap.cpp.o
+.PHONY : src/tilemap.o
+
+# target to build an object file
+src/tilemap.cpp.o:
+	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/tilemap.cpp.o
+.PHONY : src/tilemap.cpp.o
+
+src/tilemap.i: src/tilemap.cpp.i
+.PHONY : src/tilemap.i
+
+# target to preprocess a source file
+src/tilemap.cpp.i:
+	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/tilemap.cpp.i
+.PHONY : src/tilemap.cpp.i
+
+src/tilemap.s: src/tilemap.cpp.s
+.PHONY : src/tilemap.s
+
+# target to generate assembly for a file
+src/tilemap.cpp.s:
+	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/tilemap.cpp.s
+.PHONY : src/tilemap.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -178,6 +202,9 @@ help:
 	@echo "... src/qtile.o"
 	@echo "... src/qtile.i"
 	@echo "... src/qtile.s"
+	@echo "... src/tilemap.o"
+	@echo "... src/tilemap.i"
+	@echo "... src/tilemap.s"
 .PHONY : help
 
 

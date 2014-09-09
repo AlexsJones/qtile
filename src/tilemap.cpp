@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 #include <stdlib.h>
+
 #include "tilemap.h"
 #include <iostream>
 
@@ -50,6 +51,8 @@ void tilemap::draw() {
         case OBSTRUCTION:
           rect.setFillColor(sf::Color(0,0,0));
           break;
+        case PATH:
+          rect.setFillColor(sf::Color(0,0,255));
         default:
           rect.setFillColor(sf::Color(255,255,255));
       }
@@ -60,7 +63,7 @@ void tilemap::draw() {
 }
 
 void tilemap::generate_noise(void) {
-  
+
   int num = rand() % (_num_tiles_x * _num_tiles_y) / 10;
   std::cout << "Generating "<< num << " random tiles" << std::endl;
   for(int i=0;i<num;++i) {
@@ -79,6 +82,14 @@ sf::Vector2i tilemap::nominate_random_end(void) {
 }
 sf::Vector2i tilemap::nominate_random_start(void) {
   return nominate_random(START); 
+}
+void tilemap::update_best_path(std::list<tile*> *path) {
+  std::cout << "List length " << path->size() << std::endl;
+  for(int x =0; x < path->size(); ++x) {
+    tile *t = path->front();
+    t->current_state = PATH;
+    path->pop_front();
+  }
 }
 void tilemap::generate_map() {
 

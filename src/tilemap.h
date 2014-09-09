@@ -18,11 +18,13 @@
 #ifndef __TILEMAP_H__
 #define __TILEMAP_H__
 #include <SFML/Graphics.hpp>
+#include <list>
 #include "gameworld.h"
 
 typedef enum STATE { 
 UNSELECTED,
 START,
+PATH,
 END,
 OBSTRUCTION,
 }STATE;
@@ -43,6 +45,8 @@ class tilemap {
     sf::Vector2i nominate_random_start(void);
     sf::Vector2i nominate_random_end(void);
     void generate_noise(void);
+    void update_best_path(std::list<tile*> *path);
+    tile **_tile_matrix;
   private:
     sf::Vector2i nominate_random(STATE s);
     unsigned int _width;
@@ -50,7 +54,6 @@ class tilemap {
     float tile_diameter;
     int _num_tiles_x;
     int _num_tiles_y;
-    tile **_tile_matrix;
     gameworld *_game_world;
 
 };

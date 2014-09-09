@@ -115,6 +115,30 @@ qtile/fast:
 	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/build
 .PHONY : qtile/fast
 
+src/cartographer.o: src/cartographer.cpp.o
+.PHONY : src/cartographer.o
+
+# target to build an object file
+src/cartographer.cpp.o:
+	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/cartographer.cpp.o
+.PHONY : src/cartographer.cpp.o
+
+src/cartographer.i: src/cartographer.cpp.i
+.PHONY : src/cartographer.i
+
+# target to preprocess a source file
+src/cartographer.cpp.i:
+	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/cartographer.cpp.i
+.PHONY : src/cartographer.cpp.i
+
+src/cartographer.s: src/cartographer.cpp.s
+.PHONY : src/cartographer.s
+
+# target to generate assembly for a file
+src/cartographer.cpp.s:
+	$(MAKE) -f CMakeFiles/qtile.dir/build.make CMakeFiles/qtile.dir/src/cartographer.cpp.s
+.PHONY : src/cartographer.cpp.s
+
 src/gameworld.o: src/gameworld.cpp.o
 .PHONY : src/gameworld.o
 
@@ -196,6 +220,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... qtile"
 	@echo "... rebuild_cache"
+	@echo "... src/cartographer.o"
+	@echo "... src/cartographer.i"
+	@echo "... src/cartographer.s"
 	@echo "... src/gameworld.o"
 	@echo "... src/gameworld.i"
 	@echo "... src/gameworld.s"

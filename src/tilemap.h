@@ -48,13 +48,13 @@ class tilemap {
     void generate_noise(void);
     void update_best_path(std::list<tile*> *path);
     tile **_tile_matrix;
+    int _num_tiles_x;
+    int _num_tiles_y;
   private:
     sf::Vector2i nominate_random(STATE s);
     unsigned int _width;
     unsigned int _height;
     float tile_diameter;
-    int _num_tiles_x;
-    int _num_tiles_y;
     gameworld *_game_world;
 
 };

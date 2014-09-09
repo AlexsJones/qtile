@@ -20,7 +20,8 @@
 #include "tilemap.h"
 #include <iostream>
 
-tile::tile(unsigned int d,float pos_x, float pos_y, float w):diameter(d),x(pos_x),y(pos_y),weight(w),current_state(UNSELECTED){
+tile::tile(unsigned int d,float pos_x, float pos_y, float w,int gx,int gy):diameter(d),x(pos_x),y(pos_y),weight(w),current_state(UNSELECTED),grid_x(gx),grid_y(gy){
+  std::cout << "Tile generated [X:"<< pos_x << ":" <<pos_y<< "] grid position [X:" <<gx<< ":" << gy << "]" << std::endl;
 }
 tilemap::tilemap(sf::Vector2u dimension, unsigned int tile_d,gameworld *gw):_game_world(gw),_width(dimension.x),_height(dimension.y),tile_diameter(tile_d){
 
@@ -105,7 +106,7 @@ void tilemap::generate_map() {
 
       int pos_x = tile_diameter * x +1; 
       int pos_y = tile_diameter * y +1;
-      tile *t = new tile(25,pos_x,pos_y,1);
+      tile *t = new tile(25,pos_x,pos_y,1,x,y);
       memcpy(&(_tile_matrix[x][y]),t,sizeof(tile));
     }
   }

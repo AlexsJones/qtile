@@ -24,7 +24,7 @@ class node {
   public:
     node(tile *t,tile *p) {
       this_tile = t;
-      parent = p ? p : NULL;
+      this_parent = p ? p : NULL;
     }
   tile *this_tile;
   tile *this_parent;
@@ -33,6 +33,8 @@ class node {
 class cartographer {
   public:
   std::list<tile*>* generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map);
+  private:
+  std::list<node>* get_surrounding_nodes(node *target,tilemap *tile_map);
 };
 
 #endif

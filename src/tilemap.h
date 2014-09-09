@@ -31,8 +31,9 @@ OBSTRUCTION,
 
 class tile {
   public:
-    tile(unsigned int diameter,float x, float y, float weight);
+    tile(unsigned int diameter,float x, float y, float weight, int grid_x, int grid_y);
     float x, y, weight;
+    int grid_x,grid_y;
     unsigned int diameter;
     STATE current_state;
 };

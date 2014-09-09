@@ -22,12 +22,12 @@
 
 class node {
   public:
-    node(tile *t,tile *p) {
+    node(tile *t,node *p) {
       this_tile = t;
       this_parent = p ? p : NULL;
     }
   tile *this_tile;
-  tile *this_parent;
+  node *this_parent;
 };
 
 class cartographer {

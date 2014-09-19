@@ -70,7 +70,7 @@ void tilemap::draw() {
 
 void tilemap::generate_noise(void) {
 
-  int num = rand() % (_num_tiles_x * _num_tiles_y) / 10;
+  int num = rand() % (_num_tiles_x * _num_tiles_y) / 5;
   std::cout << "Generating "<< num << " random tiles" << std::endl;
   for(int i=0;i<num;++i) {
     nominate_random(OBSTRUCTION);

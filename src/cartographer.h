@@ -35,8 +35,8 @@ class cartographer {
     cartographer();
     std::list<tile*>* generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map);
   private:
-    std::list<node*>* get_surrounding_nodes(node *target,tilemap *tile_map);
-    void add_surrounding_nodes_to_list(node *target, tilemap *tile_map, std::list<node*>*list);
+    std::list<node*>* get_surrounding_nodes(node *target,tilemap *tile_map,std::list<node*>*closed_list);
+    void add_surrounding_nodes_to_list(node *target, tilemap *tile_map, std::list<node*>*list,std::list<node*>*closed_list);
     std::list<node*>::iterator find_node_in_list(std::list<node*>*list,node *start_node);
     bool node_exists_in_list(std::list<node*>*list,node *start_node);
     void delete_node_from_list(std::list<node*>*list,node *node);

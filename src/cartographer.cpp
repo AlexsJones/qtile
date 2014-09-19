@@ -21,7 +21,7 @@
 
 using namespace std;
 
-std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile_map) {
+std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile_map,std::list<node*>*closed_list) {
 
   std::list<node*> *node_list = new std::list<node*>();
   sf::Vector2i start = sf::Vector2i(target->this_tile->grid_x,target->this_tile->grid_y);
@@ -36,14 +36,16 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
       }
 
       tile *current_neighbour = &(tile_map->_tile_matrix[offset_x[x]][offset_y[y]]);
-
+      node *adding_neighbour = new node(current_neighbour,target);
+      
       if(current_neighbour != target->this_tile) {
         if(current_neighbour->current_state != OBSTRUCTION ) {
 
           cout << "current surrounding tile [" << current_neighbour->grid_x << "|" << current_neighbour->grid_y << "] and target is [" << target->this_tile->grid_x << "|" << target->this_tile->grid_y << "]" << endl;
-          node *adding_neighbour = new node(current_neighbour,target);
           adding_neighbour->this_tile->current_state = PATHFINDING; 
           node_list->push_back(adding_neighbour);  
+        }else {
+          closed_list->push_back(adding_neighbour);
         }
       }
     }
@@ -131,9 +133,9 @@ std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*
   cout << "Lowest cost node is " << cheapest_thus_far << " [" << (*lowest_it)->this_tile->grid_x << "|" << (*lowest_it)->this_tile->grid_y << "]" << endl;
   return lowest_it;
 }
-void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, std::list<node*>*list) {
+void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, std::list<node*>*list,std::list<node*>*closed_list) {
 
-  std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map);
+  std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map,closed_list);
 
   cout << "additional nodes raw " << additional_nodes->size() << endl;
 
@@ -162,9 +164,10 @@ std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
   //set our initial node
   node *current_node = start_node;
 
-  add_surrounding_nodes_to_list(current_node,tile_map,open_list);
+  add_surrounding_nodes_to_list(current_node,tile_map,open_list,closed_list);
 
   cout << "added " << open_list->size() << " to open list" << endl;
+  cout << "added " << closed_list->size() << " to closed list" << endl;
   //  //drop start_node from open list and add to closed list
   //  open_list->erase(find_node_in_list(open_list,current_node));
   //

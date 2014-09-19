@@ -138,13 +138,14 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
   std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map,closed_list);
 
   cout << "additional nodes raw " << additional_nodes->size() << endl;
-
-  for(int _x = 0; _x < additional_nodes->size(); ++_x) {
+  int count = additional_nodes->size();
+  for(int _x = 0; _x < count; ++_x) {
     node *n = additional_nodes->front();
     if(!node_exists_in_list(list,n)) {
       list->push_back(n);
     }else {
-      cout << "Node already exist in open list - ignoring" << endl;
+      cout << "Node already exist in open list, checking if this path to that tile is better.." << endl;
+
     }
     additional_nodes->pop_front();
   }
@@ -169,8 +170,9 @@ std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
   cout << "added " << open_list->size() << " to open list" << endl;
   cout << "added " << closed_list->size() << " to closed list" << endl;
   //  //drop start_node from open list and add to closed list
-  //  open_list->erase(find_node_in_list(open_list,current_node));
+    open_list->erase(find_node_in_list(open_list,current_node));
   //
+  cout << "total count in open list:" << open_list->size() << endl;
   //  closed_list->push_back(start_node);
   //
   //  //find the new lowest tile to jump too..

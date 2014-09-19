@@ -35,11 +35,12 @@ class cartographer {
     cartographer();
     std::list<tile*>* generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map);
   private:
-    std::list<node>* get_surrounding_nodes(node *target,tilemap *tile_map);
-    std::list<node>::iterator find_node_in_list(std::list<node>*list,node *start_node);
-    void delete_node_from_list(std::list<node>*list,node *node);
+    std::list<node*>* get_surrounding_nodes(node *target,tilemap *tile_map);
+    std::list<node*>::iterator find_node_in_list(std::list<node*>*list,node *start_node);
+    void delete_node_from_list(std::list<node*>*list,node *node);
     int estimate_manhatton_distance(node *a, node *b);
     int estimate_movement_cost(node *a, node *b);
+    std::list<node*>::iterator find_lowest_cost_node(std::list<node*>*list,node *end_node);
     int _diagonal_cost;
     int _lateral_cost;
 };

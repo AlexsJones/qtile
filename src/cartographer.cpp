@@ -56,7 +56,6 @@ std::list<node*>::iterator cartographer::find_node_in_list(std::list<node*>*list
   for(i = list->begin(); i != list->end(); ++i) {
     if((*i)->this_tile->grid_x ==  start_node->this_tile->grid_x  &&  
         (*i)->this_tile->grid_y == start_node->this_tile->grid_y) {
-      cout << "Found node in list... sending up for deletion" << endl;
       return i;
     }
   }
@@ -130,15 +129,11 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
 
   std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map,closed_list);
 
-  cout << "additional nodes raw " << additional_nodes->size() << endl;
   int count = additional_nodes->size();
   for(int _x = 0; _x < count; ++_x) {
     node *n = additional_nodes->front();
     if(!node_exists_in_list(list,n)) {
       list->push_back(n);
-    }else {
-      cout << "Node already exist in open list, checking if this path to that tile is better.." << endl;
-
     }
     additional_nodes->pop_front();
   }

@@ -21,7 +21,6 @@
 #include <iostream>
 
 tile::tile(unsigned int d,float pos_x, float pos_y, float w,int gx,int gy):diameter(d),x(pos_x),y(pos_y),weight(w),current_state(UNSELECTED),grid_x(gx),grid_y(gy){
-  std::cout << "Tile generated [X:"<< pos_x << ":" <<pos_y<< "] grid position [X:" <<gx<< ":" << gy << "]" << std::endl;
 }
 tilemap::tilemap(sf::Vector2u dimension, unsigned int tile_d,gameworld *gw):_game_world(gw),_width(dimension.x),_height(dimension.y),tile_diameter(tile_d){
 
@@ -91,7 +90,6 @@ sf::Vector2i tilemap::nominate_random_start(void) {
   return nominate_random(START); 
 }
 void tilemap::update_best_path(std::list<tile*> *path) {
-  std::cout << "List length " << path->size() << std::endl;
   for(int x =0; x < path->size(); ++x) {
     tile *t = path->front();
     path->pop_front();

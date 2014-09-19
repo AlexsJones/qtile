@@ -37,12 +37,10 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
 
       tile *current_neighbour = &(tile_map->_tile_matrix[offset_x[x]][offset_y[y]]);
       node *adding_neighbour = new node(current_neighbour,target);
-      
+
       if(current_neighbour != target->this_tile) {
         if(current_neighbour->current_state != OBSTRUCTION ) {
 
-          cout << "current surrounding tile [" << current_neighbour->grid_x << "|" << current_neighbour->grid_y << "] and target is [" << target->this_tile->grid_x << "|" << target->this_tile->grid_y << "]" << endl;
-          adding_neighbour->this_tile->current_state = PATHFINDING; 
           node_list->push_back(adding_neighbour);  
         }else {
           closed_list->push_back(adding_neighbour);
@@ -103,10 +101,7 @@ int cartographer::estimate_movement_cost(node *a, node *b) {
 
   for(int x=0;x<4;++x) {    // broken ???
     if(b->this_tile->grid_x == offset_x[x] && b->this_tile->grid_y == offset_y[x]) {
-      cout << "Node ["<< b->this_tile->grid_x << ":" << b->this_tile->grid_x << "] is diagonal from " << a->this_tile->grid_x << ":" << a->this_tile->grid_y << endl;
       is_diagonal = true;
-    }else {
-      cout << "Node ["<< b->this_tile->grid_x << ":" << b->this_tile->grid_x << "] is not diagonal from " << a->this_tile->grid_x << ":" << a->this_tile->grid_y << endl;
     }
   }
   return is_diagonal ? _diagonal_cost : _lateral_cost;
@@ -119,7 +114,6 @@ std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*
     node *current = *it;
 
     int cost = estimate_movement_cost(current,end_node) + estimate_manhatton_distance(current,end_node);
-    cout << "Estimated cost of movement " << cost << " of node [" << current->this_tile->grid_x << "| " << current->this_tile->grid_y << " to [" << end_node->this_tile->grid_x << "|" << end_node->this_tile->grid_y << "]"<< endl;
 
     if(cheapest_thus_far == -1) {
       cheapest_thus_far = cost;
@@ -130,7 +124,6 @@ std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*
       lowest_it = it;
     }
   }
-  cout << "Lowest cost node is " << cheapest_thus_far << " [" << (*lowest_it)->this_tile->grid_x << "|" << (*lowest_it)->this_tile->grid_y << "]" << endl;
   return lowest_it;
 }
 void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, std::list<node*>*list,std::list<node*>*closed_list) {
@@ -165,25 +158,32 @@ std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
   //set our initial node
   node *current_node = start_node;
 
-  add_surrounding_nodes_to_list(current_node,tile_map,open_list,closed_list);
+  while(open_list->size()) {
 
-  cout << "added " << open_list->size() << " to open list" << endl;
-  cout << "added " << closed_list->size() << " to closed list" << endl;
-  //  //drop start_node from open list and add to closed list
+    add_surrounding_nodes_to_list(current_node,tile_map,open_list,closed_list);
+
     open_list->erase(find_node_in_list(open_list,current_node));
-  //
-  cout << "total count in open list:" << open_list->size() << endl;
-  //  closed_list->push_back(start_node);
-  //
-  //  //find the new lowest tile to jump too..
-  //  std::list<node*>::iterator it = find_lowest_cost_node(open_list,end_node);
-  //
-  //  (*it)->this_tile->current_state = PATHCONFIRMED;
-  //
-  //  current_node = *it;
-  //
+    closed_list->push_back(current_node);
 
-  return output_path;
+    std::list<node*>::iterator it = find_lowest_cost_node(open_list,end_node);
+
+    current_node = *it;
+
+    if(current_node->this_tile->grid_x == end_node->this_tile->grid_x && current_node->this_tile->grid_y == end_node->this_tile->grid_y) {
+      return generate_output_path(current_node);
+    }else {
+      current_node->this_tile->current_state = PATHCONFIRMED;
+    }
+  } 
+  return generate_output_path(current_node);
+}
+std::list<tile*>* cartographer::generate_output_path(node *target) {
+  std::list<tile*> *out = new std::list<tile*>();
+  while(target->this_parent){ 
+    out->push_back(target->this_tile);
+    target = target->this_parent;
+  }
+  return out;
 }
 cartographer::cartographer():_diagonal_cost(15),_lateral_cost(10) {
 

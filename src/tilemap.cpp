@@ -94,7 +94,6 @@ void tilemap::update_best_path(std::list<tile*> *path) {
   std::cout << "List length " << path->size() << std::endl;
   for(int x =0; x < path->size(); ++x) {
     tile *t = path->front();
-    t->current_state = PATH;
     path->pop_front();
   }
 }

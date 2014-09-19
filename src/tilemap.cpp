@@ -49,6 +49,12 @@ void tilemap::draw() {
         case END:
           rect.setFillColor(sf::Color(255,0,0));
           break;
+        case PATHCONFIRMED:
+          rect.setFillColor(sf::Color(0,0,255));
+          break;
+        case PATHFINDING:
+          rect.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+          break;
         case OBSTRUCTION:
           rect.setFillColor(sf::Color(0,0,0));
           break;

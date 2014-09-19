@@ -31,22 +31,20 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
 
   for(int x=0;x<3; ++x) {
     for(int y=0;y<3; ++y) {
+      if(offset_x[x] < 0 || offset_y[y] < 0 || offset_x[x] > tile_map->_num_tiles_x || offset_y[y] > tile_map->_num_tiles_y) {
+        continue;
+      }
 
-      if(offset_x[x] < 0 || offset_y[y] < 0) {
-        continue;
-      }
-      if(offset_x[x] > tile_map->_num_tiles_x || offset_y[y] > tile_map->_num_tiles_y) {
-        continue;
-      }
       tile *current_neighbour = &(tile_map->_tile_matrix[offset_x[x]][offset_y[y]]);
 
       if(current_neighbour != target->this_tile) {
-
         if(current_neighbour->current_state != OBSTRUCTION ) {
+
+          cout << "current surrounding tile [" << current_neighbour->grid_x << "|" << current_neighbour->grid_y << "] and target is [" << target->this_tile->grid_x << "|" << target->this_tile->grid_y << "]" << endl;
           node *adding_neighbour = new node(current_neighbour,target);
+          adding_neighbour->this_tile->current_state = PATHFINDING; 
           node_list->push_back(adding_neighbour);  
         }
-
       }
     }
   }
@@ -63,6 +61,16 @@ std::list<node*>::iterator cartographer::find_node_in_list(std::list<node*>*list
     }
   }
   return i;
+}
+bool cartographer::node_exists_in_list(std::list<node*>*list,node *start_node) {
+  std::list<node*>::iterator i;
+  for(i = list->begin(); i != list->end(); ++i) {
+    if((*i)->this_tile->grid_x ==  start_node->this_tile->grid_x  &&  
+        (*i)->this_tile->grid_y == start_node->this_tile->grid_y) {
+      return true;
+    }
+  }
+  return false;
 }
 void cartographer::delete_node_from_list(std::list<node*>*list,node *node) {
 
@@ -104,7 +112,7 @@ int cartographer::estimate_movement_cost(node *a, node *b) {
 std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*list,node *end_node) {
   std::list<node*>::iterator it;
   std::list<node*>::iterator lowest_it;
-  int cheapest_thus_far = 1;
+  int cheapest_thus_far = -1;
   for(it = list->begin(); it != list->end(); ++it) {
     node *current = *it;
 
@@ -114,46 +122,61 @@ std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*
     if(cheapest_thus_far == -1) {
       cheapest_thus_far = cost;
       lowest_it = it;
-      continue;
     }
     if(cost < cheapest_thus_far) {
       cheapest_thus_far = cost;
       lowest_it = it;
     }
   }
+  cout << "Lowest cost node is " << cheapest_thus_far << " [" << (*lowest_it)->this_tile->grid_x << "|" << (*lowest_it)->this_tile->grid_y << "]" << endl;
   return lowest_it;
+}
+void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, std::list<node*>*list) {
+
+  std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map);
+
+  cout << "additional nodes raw " << additional_nodes->size() << endl;
+
+  for(int _x = 0; _x < additional_nodes->size(); ++_x) {
+    node *n = additional_nodes->front();
+    if(!node_exists_in_list(list,n)) {
+      list->push_back(n);
+    }else {
+      cout << "Node already exist in open list - ignoring" << endl;
+    }
+    additional_nodes->pop_front();
+  }
+  delete additional_nodes;
+
 }
 std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map) {
 
   std::list<tile*> *output_path = new std::list<tile*>();  
-
   std::list<node*> *open_list = new std::list<node*>();
   std::list<node*> *closed_list = new std::list<node*>();
 
-  //objective
   node *end_node = new node(&(tile_map->_tile_matrix[end.x][end.y]),NULL);
-  //The parent node is null for the start point!
   node *start_node = new node(&(tile_map->_tile_matrix[start.x][start.y]),NULL);
 
   open_list->push_front(start_node);
-  //get_surrounding_tiles will only add additional tiles, not the start tile!
-  std::list<node*> *additional_nodes = get_surrounding_nodes(start_node,tile_map);
-  int an_len = additional_nodes->size();
+  //set our initial node
+  node *current_node = start_node;
 
-  for(int _x = 0; _x < an_len; ++_x) {
-    node *n = additional_nodes->front();
-    open_list->push_back(n);
-    additional_nodes->pop_front();
-    cout << "Adding neighbour to start node [" << n->this_tile->grid_x << "|" << n->this_tile->grid_y << "]" << endl;
-  }
-  delete additional_nodes;
+  add_surrounding_nodes_to_list(current_node,tile_map,open_list);
 
-  //drop A from the list for now
-  open_list->erase(find_node_in_list(open_list,start_node));
-
-  //look at the current list without the start_tile and  
-//  std::list<node>::iterator it = find_lowest_cost_node(&open_list,&end_node);
-
+  cout << "added " << open_list->size() << " to open list" << endl;
+  //  //drop start_node from open list and add to closed list
+  //  open_list->erase(find_node_in_list(open_list,current_node));
+  //
+  //  closed_list->push_back(start_node);
+  //
+  //  //find the new lowest tile to jump too..
+  //  std::list<node*>::iterator it = find_lowest_cost_node(open_list,end_node);
+  //
+  //  (*it)->this_tile->current_state = PATHCONFIRMED;
+  //
+  //  current_node = *it;
+  //
 
   return output_path;
 }

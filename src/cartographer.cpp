@@ -142,7 +142,6 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
 }
 std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map) {
 
-  std::list<tile*> *output_path = new std::list<tile*>();  
   std::list<node*> *open_list = new std::list<node*>();
   std::list<node*> *closed_list = new std::list<node*>();
 
@@ -165,11 +164,13 @@ std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
     current_node = *it;
 
     if(current_node->this_tile->grid_x == end_node->this_tile->grid_x && current_node->this_tile->grid_y == end_node->this_tile->grid_y) {
+      delete open_list;
+      delete closed_list;
       return generate_output_path(current_node);
-    }else {
-      current_node->this_tile->current_state = PATHCONFIRMED;
     }
   } 
+  delete open_list;
+  delete closed_list;
   return generate_output_path(current_node);
 }
 std::list<tile*>* cartographer::generate_output_path(node *target) {
@@ -180,6 +181,6 @@ std::list<tile*>* cartographer::generate_output_path(node *target) {
   }
   return out;
 }
-cartographer::cartographer():_diagonal_cost(15),_lateral_cost(10) {
+cartographer::cartographer():_diagonal_cost(25),_lateral_cost(10) {
 
 }

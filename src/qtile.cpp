@@ -41,8 +41,9 @@ int main(int argc, char **argv) {
   //crux of the example
   std::list<tile*> *tile_path = _cartographer->generate_path(start_t,end_t,tile_map);
 
-//  tile_map->update_best_path(tile_path);
+  tile_map->update_best_path(tile_path);
 
+  delete tile_path;
 
   while(game_world->get_window()->isOpen()) {
     while(game_world->poll_event()) {

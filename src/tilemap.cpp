@@ -80,6 +80,9 @@ sf::Vector2i tilemap::nominate_random(STATE s) {
   int x = rand() % _num_tiles_x;
   int y = rand() % _num_tiles_y;
   tile *current = &(_tile_matrix[x][y]);
+  if(current->current_state == OBSTRUCTION) {
+    nominate_random(s);
+  }
   current->current_state = s;
   return sf::Vector2i(x,y);
 }
@@ -90,8 +93,15 @@ sf::Vector2i tilemap::nominate_random_start(void) {
   return nominate_random(START); 
 }
 void tilemap::update_best_path(std::list<tile*> *path) {
-  for(int x =0; x < path->size(); ++x) {
+
+
+  int len = path->size();
+  for(int x =0; x < len; ++x) {
     tile *t = path->front();
+    if(t->current_state != END) 
+    {
+      t->current_state = PATHCONFIRMED;
+    }
     path->pop_front();
   }
 }

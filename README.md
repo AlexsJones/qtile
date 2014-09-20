@@ -1,6 +1,12 @@
 qtile
 =====
 
+deps
+====
+- libGL
+- libSFML2.0
+- jnxlibc (included)
+
 installation
 ============
 - Update the submodule and install it 

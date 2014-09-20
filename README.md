@@ -1,6 +1,23 @@
 qtile
 =====
 
+installation
+============
+- Update the submodule and install it 
+
+```
+cd jnxlibc
+cmake .
+make
+sudo make install
+```
+Build qtile 
+```
+cmake .
+make
+./qtile #run
+```
+
 ![tile](http://i.imgur.com/LZnHgX3.png)
 
 Auto generates best path

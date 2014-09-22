@@ -28,12 +28,7 @@ class gameworld{
     bool poll_event();
     Event *get_event();
     Vector2u get_window_size();
-    void log(const char *format, ...) {
-      va_list argptr;
-      va_start(argptr,format);
-      JNX_LOG(log_context,format,argptr);
-      va_end(argptr);
-    }
+    void log(const char *format, ...);
     char *title;
     unsigned int width;
     unsigned int height;

@@ -31,9 +31,24 @@ int main(int argc, char **argv) {
 
   tile_map->generate_map();
   
-  sf::Vector2i start_t = tile_map->nominate_random_start();
+  sf::Vector2i start_t;
+  sf::Vector2i end_t;
+  
+start_again:
+
+  bool was_okay = tile_map->nominate_random_start(&start_t);
+  if(!was_okay) {
+    game_world->log("Encountered a problem assigning start location..trying again");
+    goto start_again; 
+  }
   std::cout << "Start at ["<<start_t.x << ":" << start_t.y << "]" << std::endl;
-  sf::Vector2i end_t = tile_map->nominate_random_end();
+end_again:
+
+  was_okay = tile_map->nominate_random_end(&end_t);
+  if(!was_okay) {
+    game_world->log("Encountered a problem assigning end location..trying again");
+    goto end_again;
+  }
   std::cout << "End at ["<<end_t.x << ":" << end_t.y << "]" << std::endl;
 
   tile_map->generate_noise();

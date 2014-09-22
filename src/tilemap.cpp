@@ -73,21 +73,31 @@ void tilemap::generate_noise(void) {
   int num = rand() % (_num_tiles_x * _num_tiles_y) / _noise_factor;
   std::cout << "Generating "<< num << " random tiles" << std::endl;
   for(int i=0;i<num;++i) {
-    nominate_random(OBSTRUCTION);
+    sf::Vector2i pos;
+    if (nominate_random(OBSTRUCTION,&pos)) {
+      //okay
+    }
   }
 }
-sf::Vector2i tilemap::nominate_random(STATE s) {
+bool tilemap::nominate_random(STATE s, sf::Vector2i *out_vector) {
   int x = rand() % _num_tiles_x;
   int y = rand() % _num_tiles_y;
   tile *current = &(_tile_matrix[x][y]);
-  current->current_state = s;
-  return sf::Vector2i(x,y);
+  if(current->current_state == UNSELECTED) {
+    current->current_state = s;
+  }else {
+    _game_world->log("Warning - trying to write over existing tile");
+    *out_vector = sf::Vector2i(0,0);
+    return false;
+  }
+  *out_vector = sf::Vector2i(x,y);
+  return true;
 }
-sf::Vector2i tilemap::nominate_random_end(void) {
-  return nominate_random(END);
+bool tilemap::nominate_random_end(sf::Vector2i *out_vector) {
+  return nominate_random(END,out_vector);
 }
-sf::Vector2i tilemap::nominate_random_start(void) {
-  return nominate_random(START); 
+bool tilemap::nominate_random_start(sf::Vector2i *out_vector) {
+  return nominate_random(START,out_vector); 
 }
 void tilemap::update_best_path(std::list<tile*> *path) {
 

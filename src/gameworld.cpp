@@ -38,3 +38,9 @@ bool gameworld::poll_event() {
 Event *gameworld::get_event() {
   return next_event;
 }
+void gameworld::log(const char *format, ...) {
+  va_list argptr;
+  va_start(argptr,format);
+  JNX_LOG(log_context,format,argptr);
+  va_end(argptr);
+}

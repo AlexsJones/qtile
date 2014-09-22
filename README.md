@@ -1,7 +1,7 @@
 qtile
 =====
 
-A few examples ![underwhelming pictures](http://imgur.com/a/6aEvR)
+A few examples [underwhelming pictures](http://imgur.com/a/6aEvR)
 
 deps
 ====

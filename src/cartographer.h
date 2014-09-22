@@ -30,6 +30,8 @@ class node {
     node *this_parent;
 };
 
+
+
 class cartographer {
   public:
     cartographer();

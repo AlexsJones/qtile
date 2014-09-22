@@ -168,7 +168,8 @@ std::list<tile*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
       delete closed_list;
       return generate_output_path(current_node);
     }
-  } 
+  }
+  // at this point we should be considering to delete unused nodes
   delete open_list;
   delete closed_list;
   return generate_output_path(current_node);

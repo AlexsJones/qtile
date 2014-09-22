@@ -25,9 +25,9 @@
 
 int main(int argc, char **argv) {
   srand(time(NULL));
-  gameworld *game_world = new gameworld((char*)"game",400,400);
+  gameworld *game_world = new gameworld((char*)"game",1000,1000);
   cartographer *_cartographer = new cartographer(); 
-  tilemap *tile_map = new tilemap(game_world->get_window_size(),TILE_DIAMETER,game_world);
+  tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 2);
 
   tile_map->generate_map();
   

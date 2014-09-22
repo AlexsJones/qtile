@@ -22,10 +22,10 @@
 
 tile::tile(unsigned int d,float pos_x, float pos_y, float w,int gx,int gy):diameter(d),x(pos_x),y(pos_y),weight(w),current_state(UNSELECTED),grid_x(gx),grid_y(gy){
 }
-tilemap::tilemap(sf::Vector2u dimension, unsigned int tile_d,gameworld *gw):_game_world(gw),_width(dimension.x),_height(dimension.y),tile_diameter(tile_d){
+tilemap::tilemap(unsigned int tile_d,gameworld *gw, int noise_factor):_game_world(gw),_width(gw->width),_height(gw->height),tile_diameter(tile_d),_noise_factor(noise_factor){
 
-  _num_tiles_x = dimension.x / tile_diameter;
-  _num_tiles_y = dimension.y / tile_diameter;
+  _num_tiles_x = gw->width / tile_diameter;
+  _num_tiles_y = gw->height / tile_diameter;
   _game_world = gw;
 }
 void tilemap::draw() {
@@ -70,7 +70,7 @@ void tilemap::draw() {
 
 void tilemap::generate_noise(void) {
 
-  int num = rand() % (_num_tiles_x * _num_tiles_y) / 5;
+  int num = rand() % (_num_tiles_x * _num_tiles_y) / _noise_factor;
   std::cout << "Generating "<< num << " random tiles" << std::endl;
   for(int i=0;i<num;++i) {
     nominate_random(OBSTRUCTION);

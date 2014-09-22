@@ -42,7 +42,7 @@ class tile {
 
 class tilemap {
   public:
-    tilemap(sf::Vector2u dimension, unsigned int tile_diameter,gameworld *game_world);
+    tilemap(unsigned int tile_diameter,gameworld *game_world,int noise_factor);
     void draw(void);
     void generate_map(void);
     sf::Vector2i nominate_random_start(void);
@@ -58,6 +58,7 @@ class tilemap {
     unsigned int _height;
     float tile_diameter;
     gameworld *_game_world;
+    int _noise_factor;
 
 };
 #endif

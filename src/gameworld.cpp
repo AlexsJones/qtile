@@ -21,6 +21,8 @@
 gameworld::gameworld(char *title,unsigned int w, unsigned int h):title(title),width(w),height(h) {
   window = new sf::RenderWindow(sf::VideoMode(w,h),title);  
   next_event = new Event();
+
+  log_context = JNX_LOG_CREATE(NULL,CONSOLETYPE);
 }
 gameworld::~gameworld() {
   delete next_event;

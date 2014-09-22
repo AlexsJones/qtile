@@ -1,6 +1,11 @@
 qtile
 =====
 
+This project contains a file called Cartographer that is an example class showing how to write an A* best path algorithm. It is not perfect but I will try to improve it with time.
+
+
+A few examples [underwhelming pictures](http://imgur.com/a/6aEvR)
+
 deps
 ====
 - libGL

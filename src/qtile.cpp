@@ -26,7 +26,7 @@
 int main(int argc, char **argv) {
   srand(time(NULL));
 
-  gameworld *game_world = new gameworld((char*)"game",1000,1000);
+  gameworld *game_world = new gameworld((char*)"game",500,500);
 
 restart:
   cartographer *_cartographer = new cartographer(); 

@@ -31,7 +31,7 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
 
   for(int x=0;x<3; ++x) {
     for(int y=0;y<3; ++y) {
-      if(offset_x[x] < 0 || offset_y[y] < 0 || offset_x[x] > tile_map->_num_tiles_x || offset_y[y] > tile_map->_num_tiles_y) {
+      if(offset_x[x] < 0 || offset_y[y] < 0 || offset_x[x] >= tile_map->_num_tiles_x || offset_y[y] >= tile_map->_num_tiles_y) {
         continue;
       }
 
@@ -40,6 +40,7 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
       node *adding_neighbour = new node(current_neighbour,target);
       JNXCHECK(adding_neighbour);
       if(current_neighbour != target->this_tile) {
+        cout << "tilemap position " << offset_x[x] << " | " << offset_y[y] << endl;
         if(current_neighbour->current_state != OBSTRUCTION ) {
           node_list->push_back(adding_neighbour);  
         }else {
@@ -132,7 +133,6 @@ std::list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
   node *start_node = new node(&(tile_map->_tile_matrix[start.x][start.y]),NULL);
 
   open_list->push_front(start_node);
-  //set our initial node
   node *current_node = start_node;
 
   while(open_list->size()) {

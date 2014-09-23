@@ -23,13 +23,24 @@
 #include <iostream>
 #define TILE_DIAMETER 25
 
+using namespace std;
+/*
+ * The compare node function is called by the cartographer to get the users opinion on whether the node should be added to the open list
+ */
+bool compare_node(node *n) {
+  if(n->this_tile->current_state == OBSTRUCTION) {
+    return false;
+  }
+  return true;
+}
 int main(int argc, char **argv) {
   srand(time(NULL));
 
   gameworld *game_world = new gameworld((char*)"game",500,500);
-
+  cartographer_configuration *configuration = new cartographer_configuration();
+  configuration->add_custom_node_conditionality(compare_node);
 restart:
-  cartographer *_cartographer = new cartographer(new cartographer_configuration()); 
+  cartographer *_cartographer = new cartographer(configuration); 
   tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 1);
   tile_map->generate_map();
 
@@ -87,6 +98,6 @@ end_again:
 
     game_world->get_window()->display();
   }
-  
+
   return 0;
 }

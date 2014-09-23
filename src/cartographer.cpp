@@ -40,8 +40,7 @@ list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile_map,
       node *adding_neighbour = new node(current_neighbour,target);
       JNXCHECK(adding_neighbour);
       if(current_neighbour != target->this_tile) {
-        cout << "tilemap position " << offset_x[x] << " | " << offset_y[y] << endl;
-        if(current_neighbour->current_state != OBSTRUCTION ) {
+        if(configuration->check_conditions_on_node(adding_neighbour)){
           node_list->push_back(adding_neighbour);  
         }else {
           closed_list->push_back(adding_neighbour);
@@ -131,7 +130,6 @@ list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i end, t
 
   node *end_node = new node(&(tile_map->_tile_matrix[end.x][end.y]),NULL);
   node *start_node = new node(&(tile_map->_tile_matrix[start.x][start.y]),NULL);
-
   open_list->push_front(start_node);
   node *current_node = start_node;
 

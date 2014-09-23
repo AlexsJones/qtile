@@ -30,20 +30,37 @@ class node {
     node *this_parent;
 };
 
+
 class cartographer_configuration {
+
+  typedef bool (node_conditionality_functor)(node *);
+
   public: 
-    cartographer_configuration(int diagonal_cost = 15, int lateral_cost = 10):_diagonal_cost(diagonal_cost),
-  _lateral_cost(lateral_cost){
+  cartographer_configuration(int diagonal_cost = 15, int lateral_cost = 10):_diagonal_cost(diagonal_cost),
+  _lateral_cost(lateral_cost),_usr_comparison_function(NULL){
+  }
+  /* This allows the user to assign a C function to process whether a node should be added to the open list e.g. exclude certain nodes based on height etc.. */
+  void add_custom_node_conditionality(node_conditionality_functor *fnctr) {
+    _usr_comparison_function = fnctr;
+  }
+  bool check_conditions_on_node(node *n) {
+    if(!_usr_comparison_function) {
+      return true;
     }
+    return _usr_comparison_function(n);
+  }
   int _diagonal_cost;
   int _lateral_cost;
+  node_conditionality_functor *_usr_comparison_function; 
 };
 
 class cartographer {
+
   public:
     cartographer(cartographer_configuration *configuration);
     ~cartographer();
     std::list<node*>* generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map);
+
   private:
     std::list<node*>*generate_output_path(node *target);
     std::list<node*>* get_surrounding_nodes(node *target,tilemap *tile_map,std::list<node*>*closed_list);

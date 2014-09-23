@@ -28,6 +28,7 @@ int main(int argc, char **argv) {
 
   gameworld *game_world = new gameworld((char*)"game",1000,1000);
 
+restart:
   cartographer *_cartographer = new cartographer(); 
   tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 2);
   tile_map->generate_map();
@@ -77,7 +78,7 @@ end_again:
         game_world->get_window()->close();
       }
       if((game_world->get_event()->type == sf::Event::KeyReleased) && (game_world->get_event()->key.code == sf::Keyboard::Space)){
-
+        goto restart;
       }
     }
     game_world->get_window()->clear(sf::Color::Black);

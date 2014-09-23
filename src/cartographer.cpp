@@ -23,7 +23,6 @@
 using namespace std;
 
 std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile_map,std::list<node*>*closed_list) {
-
   std::list<node*> *node_list = new std::list<node*>();
   sf::Vector2i start = sf::Vector2i(target->this_tile->grid_x,target->this_tile->grid_y);
 
@@ -126,7 +125,6 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
     additional_nodes->pop_front();
   }
   delete additional_nodes;
-
 }
 std::list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map) {
 

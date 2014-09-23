@@ -4,11 +4,9 @@ qtile
 This project contains a file called Cartographer that is an example class showing how to write an A* best path algorithm. It is not perfect but I will try to improve it with time.
 
 
-A few examples [underwhelming pictures](http://imgur.com/a/6aEvR)
+[![Alt text for your video](http://img.youtube.com/vi/wKKv6OllU5M/0.jpg)](http://www.youtube.com/watch?v=wKKv6OllU5M)
 
-
-
-<iframe title="YouTube video player" width="480" height="390" src="http://www.youtube.com/watch?v=wKKv6OllU5M?autoplay=1" frameborder="0" allowfullscreen></iframe>
+A few more examples [underwhelming pictures](http://imgur.com/a/6aEvR)
 
 usage
 ====

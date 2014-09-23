@@ -30,9 +30,18 @@ class node {
     node *this_parent;
 };
 
+class cartographer_configuration {
+  public: 
+    cartographer_configuration(int diagonal_cost = 15, int lateral_cost = 10):_diagonal_cost(diagonal_cost),
+  _lateral_cost(lateral_cost){
+    }
+  int _diagonal_cost;
+  int _lateral_cost;
+};
+
 class cartographer {
   public:
-    cartographer();
+    cartographer(cartographer_configuration *configuration);
     ~cartographer();
     std::list<node*>* generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map);
   private:
@@ -45,8 +54,7 @@ class cartographer {
     int estimate_manhatton_distance(node *a, node *b);
     int estimate_movement_cost(node *a, node *b);
     std::list<node*>::iterator find_lowest_cost_node(std::list<node*>*list,node *end_node);
-    int _diagonal_cost;
-    int _lateral_cost;
+    cartographer_configuration *configuration;
     std::list<node*> *open_list;
     std::list<node*> *closed_list;
     std::list<node*> *output_list;

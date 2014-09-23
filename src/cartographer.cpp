@@ -22,8 +22,8 @@
 
 using namespace std;
 
-std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile_map,std::list<node*>*closed_list) {
-  std::list<node*> *node_list = new std::list<node*>();
+list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile_map,list<node*>*closed_list) {
+  list<node*> *node_list = new list<node*>();
   sf::Vector2i start = sf::Vector2i(target->this_tile->grid_x,target->this_tile->grid_y);
 
   int offset_x[3] = { start.x -1,start.x, start.x + 1 };
@@ -51,9 +51,9 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
   }
   return node_list;
 }
-bool cartographer::node_exists_in_list(std::list<node*>*list,node *start_node) {
-  std::list<node*>::iterator i;
-  for(i = list->begin(); i != list->end(); ++i) {
+bool cartographer::node_exists_in_list(list<node*>*l,node *start_node) {
+  list<node*>::iterator i;
+  for(i = l->begin(); i != l->end(); ++i) {
     if((*i)->this_tile->grid_x ==  start_node->this_tile->grid_x  &&  
         (*i)->this_tile->grid_y == start_node->this_tile->grid_y) {
       return true;
@@ -90,13 +90,13 @@ int cartographer::estimate_movement_cost(node *a, node *b) {
       is_diagonal = true;
     }
   }
-  return is_diagonal ? _diagonal_cost : _lateral_cost;
+  return is_diagonal ? configuration->_diagonal_cost : configuration->_lateral_cost;
 }
-std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*list,node *end_node) {
-  std::list<node*>::iterator it;
-  std::list<node*>::iterator lowest_it;
+list<node*>::iterator cartographer::find_lowest_cost_node(list<node*>*l,node *end_node) {
+  list<node*>::iterator it;
+  list<node*>::iterator lowest_it;
   int cheapest_thus_far = -1;
-  for(it = list->begin(); it != list->end(); ++it) {
+  for(it = l->begin(); it != l->end(); ++it) {
     node *current = *it;
     int cost = estimate_movement_cost(current,end_node) + estimate_manhatton_distance(current,end_node);
     if(cheapest_thus_far == -1) {
@@ -110,8 +110,8 @@ std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*
   }
   return lowest_it;
 }
-void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, std::list<node*>*list,std::list<node*>*closed_list) {
-  std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map,closed_list);
+void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, list<node*>*l, list<node*>*closed_list) {
+  list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map,closed_list);
 
   int count = additional_nodes->size();
   for(int _x = 0; _x < count; ++_x) {
@@ -119,15 +119,15 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
 
     if(node_exists_in_list(closed_list,n)){
     }else {
-      if(!node_exists_in_list(list,n)) {
-        list->push_back(n);
+      if(!node_exists_in_list(l,n)) {
+        l->push_back(n);
       }
     }
     additional_nodes->pop_front();
   }
   delete additional_nodes;
 }
-std::list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map) {
+list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i end, tilemap *tile_map) {
 
   node *end_node = new node(&(tile_map->_tile_matrix[end.x][end.y]),NULL);
   node *start_node = new node(&(tile_map->_tile_matrix[start.x][start.y]),NULL);
@@ -144,16 +144,15 @@ std::list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
     if(!open_list->size()) {
       return generate_output_path(current_node);
     }
-    std::list<node*>::iterator it = find_lowest_cost_node(open_list,end_node);
+    list<node*>::iterator it = find_lowest_cost_node(open_list,end_node);
     current_node = *it;
-
     if(current_node->this_tile->grid_x == end_node->this_tile->grid_x && current_node->this_tile->grid_y == end_node->this_tile->grid_y) {
       return generate_output_path(current_node);
     }
   }
   return generate_output_path(current_node);
 }
-std::list<node*>* cartographer::generate_output_path(node *target) {
+list<node*>* cartographer::generate_output_path(node *target) {
   output_list->clear();
   while(target->this_parent){ 
     output_list->push_back(target);
@@ -161,10 +160,14 @@ std::list<node*>* cartographer::generate_output_path(node *target) {
   }
   return output_list;
 }
-cartographer::cartographer():_diagonal_cost(25),_lateral_cost(10),open_list(new std::list<node*>()),output_list(new std::list<node*>()),closed_list(new std::list<node*>()) {
-}
+cartographer::cartographer(cartographer_configuration *configuration):configuration(configuration),
+  open_list(new list<node*>()),
+  output_list(new list<node*>()),
+  closed_list(new list<node*>()) {
+  }
 cartographer::~cartographer() {
   delete open_list;
   delete closed_list;
   delete output_list;
+  delete configuration;
 }

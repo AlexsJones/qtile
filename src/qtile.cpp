@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
   gameworld *game_world = new gameworld((char*)"game",500,500);
 
 restart:
-  cartographer *_cartographer = new cartographer(); 
+  cartographer *_cartographer = new cartographer(new cartographer_configuration()); 
   tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 1);
   tile_map->generate_map();
 

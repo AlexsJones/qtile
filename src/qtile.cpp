@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
 restart:
   cartographer *_cartographer = new cartographer(); 
-  tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 2);
+  tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 1);
   tile_map->generate_map();
 
   sf::Vector2i start_t;
@@ -78,6 +78,7 @@ end_again:
         game_world->get_window()->close();
       }
       if((game_world->get_event()->type == sf::Event::KeyReleased) && (game_world->get_event()->key.code == sf::Keyboard::Space)){
+
         goto restart;
       }
     }

@@ -141,7 +141,9 @@ std::list<node*>* cartographer::generate_path(sf::Vector2i start, sf::Vector2i e
 
     open_list->remove(current_node);
     closed_list->push_back(current_node);
-
+    if(!open_list->size()) {
+      return generate_output_path(current_node);
+    }
     std::list<node*>::iterator it = find_lowest_cost_node(open_list,end_node);
     current_node = *it;
 

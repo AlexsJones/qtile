@@ -6,6 +6,13 @@ This project contains a file called Cartographer that is an example class showin
 
 A few examples [underwhelming pictures](http://imgur.com/a/6aEvR)
 
+
+usage
+====
+
+Press `space bar` to regenerate the path
+`Escape` to close the program
+
 deps
 ====
 - libGL

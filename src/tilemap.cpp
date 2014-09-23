@@ -100,8 +100,6 @@ bool tilemap::nominate_random_start(sf::Vector2i *out_vector) {
   return nominate_random(START,out_vector); 
 }
 void tilemap::update_best_path(std::list<tile*> *path) {
-
-
   int len = path->size();
   for(int x =0; x < len; ++x) {
     tile *t = path->front();

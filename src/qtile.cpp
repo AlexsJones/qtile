@@ -25,15 +25,16 @@
 
 int main(int argc, char **argv) {
   srand(time(NULL));
+
   gameworld *game_world = new gameworld((char*)"game",1000,1000);
+
   cartographer *_cartographer = new cartographer(); 
   tilemap *tile_map = new tilemap(TILE_DIAMETER,game_world, 2);
-
   tile_map->generate_map();
-  
+
   sf::Vector2i start_t;
   sf::Vector2i end_t;
-  
+
 start_again:
 
   bool was_okay = tile_map->nominate_random_start(&start_t);
@@ -54,16 +55,29 @@ end_again:
   tile_map->generate_noise();
 
   //crux of the example
-  std::list<tile*> *tile_path = _cartographer->generate_path(start_t,end_t,tile_map);
+  std::list<node*> *node_path = _cartographer->generate_path(start_t,end_t,tile_map);
 
+  std::list<tile*> *tile_path = new std::list<tile*>();
+  std::list<node*>::iterator i;
+  for(i = node_path->begin(); i != node_path->end(); ++i) {
+    tile *t = (*i)->this_tile;
+    tile_path->push_back(t);
+  }
   tile_map->update_best_path(tile_path);
 
+  delete node_path;
   delete tile_path;
 
   while(game_world->get_window()->isOpen()) {
     while(game_world->poll_event()) {
+      if((game_world->get_event()->type == sf::Event::KeyReleased) && (game_world->get_event()->key.code == sf::Keyboard::Escape)) {
+        game_world->get_window()->close();
+      }
       if(game_world->get_event()->type == sf::Event::Closed) {
         game_world->get_window()->close();
+      }
+      if((game_world->get_event()->type == sf::Event::KeyReleased) && (game_world->get_event()->key.code == sf::Keyboard::Space)){
+
       }
     }
     game_world->get_window()->clear(sf::Color::Black);
@@ -71,5 +85,6 @@ end_again:
 
     game_world->get_window()->display();
   }
+  
   return 0;
 }

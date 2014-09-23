@@ -41,7 +41,6 @@ std::list<node*>* cartographer::get_surrounding_nodes(node *target,tilemap *tile
       node *adding_neighbour = new node(current_neighbour,target);
       JNXCHECK(adding_neighbour);
       if(current_neighbour != target->this_tile) {
-        cout << "current_neighbour of " << target->this_tile->grid_x << "|" << target->this_tile->grid_y << " is " << current_neighbour->grid_x << "|" << current_neighbour->grid_y << endl;
         if(current_neighbour->current_state != OBSTRUCTION ) {
           node_list->push_back(adding_neighbour);  
         }else {
@@ -112,13 +111,12 @@ std::list<node*>::iterator cartographer::find_lowest_cost_node(std::list<node*>*
   return lowest_it;
 }
 void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *tile_map, std::list<node*>*list,std::list<node*>*closed_list) {
-  cout << "add_surrounding_nodes_to_list" << endl;
   std::list<node*> *additional_nodes = get_surrounding_nodes(current_node,tile_map,closed_list);
 
   int count = additional_nodes->size();
   for(int _x = 0; _x < count; ++_x) {
     node *n = additional_nodes->front();
- 
+
     if(node_exists_in_list(closed_list,n)){
       cout << "Not adding an additional node as it already exists on the closed list" << endl;
     }else {
@@ -126,7 +124,6 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
         list->push_back(n);
       }
     }
-
     additional_nodes->pop_front();
   }
   delete additional_nodes;

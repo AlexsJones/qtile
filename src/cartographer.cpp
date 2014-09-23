@@ -118,7 +118,6 @@ void cartographer::add_surrounding_nodes_to_list(node *current_node, tilemap *ti
     node *n = additional_nodes->front();
 
     if(node_exists_in_list(closed_list,n)){
-      cout << "Not adding an additional node as it already exists on the closed list" << endl;
     }else {
       if(!node_exists_in_list(list,n)) {
         list->push_back(n);

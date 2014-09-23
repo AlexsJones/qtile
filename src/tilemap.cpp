@@ -86,7 +86,6 @@ bool tilemap::nominate_random(STATE s, sf::Vector2i *out_vector) {
   if(current->current_state == UNSELECTED) {
     current->current_state = s;
   }else {
-    _game_world->log("Warning - trying to write over existing tile");
     *out_vector = sf::Vector2i(0,0);
     return false;
   }
@@ -111,8 +110,6 @@ void tilemap::update_best_path(std::list<tile*> *path) {
   }
 }
 void tilemap::generate_map() {
-
-  std::cout << _num_tiles_x << " | " << _num_tiles_y << std::endl;
 
   _tile_matrix = (tile**)calloc(_num_tiles_x,sizeof(tile));
   for(int x=0;x<_num_tiles_x;++x) {

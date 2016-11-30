@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include "gameworld.h"
+#include <stdarg.h>
 
 gameworld::gameworld(char *title,unsigned int w, unsigned int h):title(title),width(w),height(h) {
   window = new sf::RenderWindow(sf::VideoMode(w,h),title);  
